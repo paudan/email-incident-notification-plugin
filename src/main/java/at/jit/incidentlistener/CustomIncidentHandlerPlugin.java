@@ -17,9 +17,7 @@
 package at.jit.incidentlistener;
 
 import static java.util.Arrays.asList;
-
 import java.util.List;
-
 import org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.incident.IncidentHandler;
@@ -40,20 +38,23 @@ public class CustomIncidentHandlerPlugin extends AbstractProcessEnginePlugin {
   private String mailSender;
   private String mailBodyTemplate;
   private String incidentTemplate;
+  private String enableSSL;
+  private String enableTLS;
 
   @Override
   public void preInit(final ProcessEngineConfigurationImpl processEngineConfig) {
     final Config config = new Config().withIntervalMs(Long.parseLong(intervalMs)).withUrl(url)
         .withFallbackMailReceiver(fallbackMailReceiver).withUsername(username).withPassword(password)
         .withSubject(subject).withHost(host).withPort(Integer.parseInt(port)).withMailSender(mailSender)
-        .withMailBodyTemplate(mailBodyTemplate).withIncidentTemplate(incidentTemplate);
+        .withMailBodyTemplate(mailBodyTemplate).withIncidentTemplate(incidentTemplate)
+        .withEnableSSL(Boolean.parseBoolean(enableSSL))
+        .withEnableTLS(Boolean.parseBoolean(enableTLS));
     final BufferingIncidentHandler failedJobHandler = createFailedJobIncidentHandler(config);
     final BufferingIncidentHandler failedExternalTaskHandler = createFailedExternalTaskIncidentHandler(config);
     final List<IncidentHandler> incidentListeners = asList(failedJobHandler, failedExternalTaskHandler);
     processEngineConfig.setCustomIncidentHandlers(incidentListeners);
-
     incidentListeners.stream().map(incidentHandler -> (BufferingIncidentHandler) incidentHandler)
-        .forEach(incidentListener -> incidentListener.startTimer());
+        .forEach(BufferingIncidentHandler::startTimer);
   }
 
   FailedExternalTaskIncidentHandler createFailedExternalTaskIncidentHandler(final Config config) {
@@ -150,5 +151,21 @@ public class CustomIncidentHandlerPlugin extends AbstractProcessEnginePlugin {
 
   public void setIncidentTemplate(String incidentTemplate) {
     this.incidentTemplate = incidentTemplate;
+  }
+
+  public String getEnableSSL() {
+    return enableSSL;
+  }
+
+  public void setEnableSSL(String enableSSL) {
+    this.enableSSL = enableSSL;
+  }
+
+  public String getEnableTLS() {
+    return enableTLS;
+  }
+
+  public void setEnableTLS(String enableTLS) {
+    this.enableTLS = enableTLS;
   }
 }

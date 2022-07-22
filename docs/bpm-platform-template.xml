@@ -47,6 +47,8 @@
                <property name="subject">Incident Report Camunda</property>
                <property name="host">mailserver-host</property>
                <property name="port">587</property>
+               <property name="enableSSL">true</property>
+               <property name="enableTLS">true</property>
                <property name="mailSender">camunda@mycompany.at</property>
                <property name="mailBodyTemplate">An error occured in at least one of your processes!
 Please check the following processes in your Camunda Cockpit:

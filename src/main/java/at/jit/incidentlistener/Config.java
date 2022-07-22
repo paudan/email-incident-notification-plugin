@@ -28,6 +28,8 @@ public class Config {
   private String mailSender;
   private String mailBodyTemplate;
   private String incidentTemplate;
+  private Boolean enableSSL;
+  private Boolean enableTLS;
 
   public Config withIntervalMs(Long intervalMs) {
     this.intervalMs = intervalMs;
@@ -126,5 +128,23 @@ public class Config {
 
   public String getIncidentTemplate() {
     return incidentTemplate;
+  }
+
+  public Boolean getEnableSSL() {
+    return enableSSL;
+  }
+
+  public Config withEnableSSL(Boolean enableSSL) {
+    this.enableSSL = enableSSL;
+    return this;
+  }
+
+  public Boolean getEnableTLS() {
+    return enableTLS;
+  }
+
+  public Config withEnableTLS(Boolean enableTLS) {
+    this.enableTLS = enableTLS;
+    return this;
   }
 }

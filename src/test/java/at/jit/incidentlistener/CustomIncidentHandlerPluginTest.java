@@ -39,10 +39,12 @@ public class CustomIncidentHandlerPluginTest {
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String SUBJECT = "subject";
-    public static final String HOST = "smpt.gmail.com";
+    public static final String HOST = "smtp.gmail.com";
     public static final String MAIL_SENDER = "mailsender@provider.com";
     public static final String MAIL_BODY_TEMPLATE = "mailBodyTemplate";
     public static final String INCIDENT_TEMPLATE = "incidentTemplate";
+    public static final String ENABLE_SSL = "true";
+    public static final String ENABLE_TLS = "true";
 
     @Test
     public void givenConfig_whenPreInit_thenCallTheRightMethods() {
@@ -82,6 +84,8 @@ public class CustomIncidentHandlerPluginTest {
         customIncidentHandlerPlugin.setMailSender(MAIL_SENDER);
         customIncidentHandlerPlugin.setMailBodyTemplate(MAIL_BODY_TEMPLATE);
         customIncidentHandlerPlugin.setIncidentTemplate(INCIDENT_TEMPLATE);
+        customIncidentHandlerPlugin.setEnableSSL(ENABLE_SSL);
+        customIncidentHandlerPlugin.setEnableTLS(ENABLE_TLS);
 
         // When
         customIncidentHandlerPlugin.preInit(processEngineConfig);
@@ -108,5 +112,7 @@ public class CustomIncidentHandlerPluginTest {
         assertEquals(HOST, actConfig.getHost());
         assertEquals(MAIL_BODY_TEMPLATE, actConfig.getMailBodyTemplate());
         assertEquals(INCIDENT_TEMPLATE, actConfig.getIncidentTemplate());
+        assertEquals(Boolean.parseBoolean(ENABLE_SSL), actConfig.getEnableSSL());
+        assertEquals(Boolean.parseBoolean(ENABLE_TLS), actConfig.getEnableTLS());
     }
 }
