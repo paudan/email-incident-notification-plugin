@@ -69,9 +69,9 @@ of the incident listener repository.
 
 ### Step 4
 
-Build the JAR file using `mvn clean package`. This will create the file 
+Build the JAR file using `mvn clean package -DskipTests`. This will create the file 
 `incident-listener-1.0.0-jar-with-dependencies.jar` in the directory
-`target`.
+`target`. 
 
 ### Step 5
 
@@ -97,6 +97,8 @@ Add a plugin configuration entry to this file:
                <property name="subject">Incident Report Camunda</property>
                <property name="host">mailserver-host</property>
                <property name="port">587</property>
+               <property name="enableSSL">true</property>
+               <property name="enableTLS">true</property>
                <property name="mailSender">camunda@mycompany.at</property>
                <property name="mailBodyTemplate">An error occured in at least one of your processes!
 Please check the following processes in your Camunda Cockpit:
@@ -187,6 +189,14 @@ Address (host) of the e-mail server (SMTP).
 #### Configuration parameter `port`
 
 Port of the e-mail server.
+
+#### Configuration parameter `enableSSL`
+
+Enable/disable SSL connection setting
+
+#### Configuration parameter `enableTLS`
+
+Enable/disable TLS connection setting
 
 #### Configuration parameter `mailSender`
 
@@ -335,6 +345,8 @@ incident-listener:
   password: TODO
   host: TODO
   port: TODO
+  enableSSL: TODO
+  enableTLS: TODO
   mailSender: TODO
   subject: Incident Report Camunda
   mailBodyTemplate: |
@@ -393,6 +405,12 @@ public class IncidentListenerConfig {
     @Value("${incident-listener.port}")
     private String port;
 
+    @Value("${incident-listener.enableSSL}")
+    private String enableSSL;
+
+    @Value("${incident-listener.enableTLS}")
+    private String enableTLS;
+
     @Value("${incident-listener.mailSender}")
     private String mailSender;
 
@@ -415,6 +433,8 @@ public class IncidentListenerConfig {
         plugin.setPassword(password);
         plugin.setHost(host);
         plugin.setPort(port);
+        plugin.setEnableSSL(enableSSL);
+        plugin.setEnableTLS(enableTLS);
         plugin.setMailSender(mailSender);
         plugin.setMailBodyTemplate(mailBodyTemplate);
         plugin.setIncidentTemplate(incidentTemplate);
